@@ -17,12 +17,14 @@ repositories {
     mavenCentral()
 }
 
-project.afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-            }
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'pers.zhc.jni'
+            artifactId = 'pers.zhc.jni'
+            version = '1.0'
+
+            from components.java
         }
     }
 }
