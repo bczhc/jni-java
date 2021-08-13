@@ -149,5 +149,14 @@ public class JNI {
         public static native float unpackFloat(byte[] bytes, int offset, int mode);
 
         public static native double unpackDouble(byte[] bytes, int offset, int mode);
+
+        /**
+         * Get the byte order of the current machine
+         *
+         * @return endianness enum ordinal
+         * {@code 0}: {@link pers.zhc.jni.struct.Struct.Endianness#BIG}
+         * {@code 1}: {@link pers.zhc.jni.struct.Struct.Endianness#LITTLE}
+         */
+        public static native int getEndianness();
     }
 }
