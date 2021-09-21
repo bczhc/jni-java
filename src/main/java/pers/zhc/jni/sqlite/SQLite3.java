@@ -1,5 +1,6 @@
 package pers.zhc.jni.sqlite;
 
+import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 import pers.zhc.jni.JNI;
 import pers.zhc.util.Assertion;
@@ -45,15 +46,15 @@ public class SQLite3 {
      * @param cmd      statement
      * @param callback callback
      */
-    public void exec(String cmd, JNI.Sqlite3.SqliteExecCallback callback) {
+    public void exec(@Language("SQLite") String cmd, JNI.Sqlite3.SqliteExecCallback callback) {
         JNI.Sqlite3.exec(this.id, cmd, callback);
     }
 
-    public void exec(String cmd) {
+    public void exec(@Language("SQLite") String cmd) {
         exec(cmd, null);
     }
 
-    public void execBind(String cmd, Object[] binds) {
+    public void execBind(@Language("SQLite") String cmd, Object[] binds) {
         final Statement statement = compileStatement(cmd, binds);
         statement.step();
         statement.release();
@@ -82,7 +83,7 @@ public class SQLite3 {
      * @param selectSql <p>SQLite select statement</p>
      * @return existence boolean
      */
-    public boolean hasRecord(String selectSql, Object[] binds) {
+    public boolean hasRecord(@Language("SQLite") String selectSql, Object[] binds) {
         final Statement statement = compileStatement(selectSql);
         if (binds != null) {
             statement.bind(binds);
@@ -93,7 +94,7 @@ public class SQLite3 {
         return stepRow == SQLITE_ROW;
     }
 
-    public boolean hasRecord(String selectSql) {
+    public boolean hasRecord(@Language("SQLite") String selectSql) {
         return hasRecord(selectSql, null);
     }
 
@@ -101,12 +102,12 @@ public class SQLite3 {
         return JNI.Sqlite3.checkIfCorrupt(id);
     }
 
-    public Statement compileStatement(String sql) {
+    public Statement compileStatement(@Language("SQLite") String sql) {
         long statementId = JNI.Sqlite3.compileStatement(this.id, sql);
         return new Statement(statementId);
     }
 
-    public Statement compileStatement(String sql, @NotNull Object[] binds) {
+    public Statement compileStatement(@Language("SQLite") String sql, @NotNull Object[] binds) {
         long statementId = JNI.Sqlite3.compileStatement(this.id, sql);
         final Statement statement = new Statement(statementId);
         statement.bind(binds);
