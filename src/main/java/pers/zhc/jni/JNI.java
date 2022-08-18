@@ -13,7 +13,7 @@ public class JNI {
          * Open sqlite database.
          *
          * @param path sqlite database path, if not exists, it'll create a new sqlite database
-         * @return the associated id which is the address of an handler object in JNI.
+         * @return the associated id which is the address of a handler object in JNI.
          */
         public static native long open(String path) throws RuntimeException;
 
@@ -49,9 +49,9 @@ public class JNI {
          */
         public static native long compileStatement(long id, String sql) throws RuntimeException;
 
-        public static native void key(String key);
+        public static native void key(long id, String key);
 
-        public static native void rekey(String key);
+        public static native void rekey(long id, String key);
 
         public static class Statement {
             /* Statement methods start: */

@@ -61,11 +61,11 @@ public class SQLite3 {
     }
 
     public void key(String key) {
-        JNI.Sqlite3.key(key);
+        JNI.Sqlite3.key(id, key);
     }
 
     public void rekey(String key) {
-        JNI.Sqlite3.rekey(key);
+        JNI.Sqlite3.rekey(id, key);
     }
 
     public boolean isClosed() {
