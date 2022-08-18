@@ -78,7 +78,7 @@ public class SQLite3 {
     }
 
     /**
-     * Get if a record is exist.
+     * Get if a record exists.
      *
      * @param selectSql <p>SQLite select statement</p>
      * @return existence boolean
