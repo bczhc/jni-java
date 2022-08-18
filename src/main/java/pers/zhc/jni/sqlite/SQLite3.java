@@ -60,6 +60,14 @@ public class SQLite3 {
         statement.release();
     }
 
+    public void key(String key) {
+        JNI.Sqlite3.key(key);
+    }
+
+    public void rekey(String key) {
+        JNI.Sqlite3.rekey(key);
+    }
+
     public boolean isClosed() {
         return isClosed;
     }

@@ -49,6 +49,10 @@ public class JNI {
          */
         public static native long compileStatement(long id, String sql) throws RuntimeException;
 
+        public static native void key(String key);
+
+        public static native void rekey(String key);
+
         public static class Statement {
             /* Statement methods start: */
             public static native void bind(long stmtId, int row, int a) throws RuntimeException;
