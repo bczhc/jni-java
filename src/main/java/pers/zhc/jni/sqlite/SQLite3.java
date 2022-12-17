@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import pers.zhc.jni.JNI;
 import pers.zhc.util.Assertion;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -142,5 +143,23 @@ public class SQLite3 {
         statement.release();
 
         return count;
+    }
+
+    public ArrayList<Schema> querySchema() {
+        ArrayList<Schema> schemaList = new ArrayList<>();
+
+        Statement statement = compileStatement("SELECT type, name, tbl_name, rootpage, sql FROM sqlite_master");
+        Cursor cursor = statement.getCursor();
+        while (cursor.step()) {
+            String typeName = cursor.getText(0);
+            String name = cursor.getText(1);
+            String tableName = cursor.getText(2);
+            int rootPage = cursor.getInt(3);
+            String sql = cursor.getText(4);
+            schemaList.add(new Schema(Schema.Type.fromString(typeName), name, tableName, rootPage, sql));
+        }
+        statement.release();
+
+        return schemaList;
     }
 }
