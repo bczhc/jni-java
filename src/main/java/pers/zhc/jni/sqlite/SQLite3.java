@@ -97,10 +97,10 @@ public class SQLite3 {
         if (binds != null) {
             statement.bind(binds);
         }
-        final int stepRow = statement.stepRow();
+        boolean stepRow = statement.stepRow();
         statement.release();
 
-        return stepRow == SQLITE_ROW;
+        return stepRow;
     }
 
     public boolean hasRecord(@Language("SQLite") String selectSql) {

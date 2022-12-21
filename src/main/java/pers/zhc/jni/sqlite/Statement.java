@@ -1,7 +1,6 @@
 package pers.zhc.jni.sqlite;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import pers.zhc.jni.JNI;
 
 public class Statement {
@@ -103,7 +102,7 @@ public class Statement {
         JNI.Sqlite3.Statement.finalize(statementId);
     }
 
-    public int stepRow() {
+    public boolean stepRow() {
         return JNI.Sqlite3.Statement.stepRow(statementId);
     }
 
@@ -137,5 +136,13 @@ public class Statement {
                 throw new RuntimeException("Unknown binding object: " + bind);
             }
         }
+    }
+
+    public <T> Rows<T> queryRows(RowMapper<T> rowMapper) {
+        return new Rows<>(this.getCursor(), rowMapper);
+    }
+
+    public interface RowMapper<T> {
+        T mapRow(Cursor cursor);
     }
 }

@@ -23,12 +23,7 @@ public class Cursor {
      * @return next
      */
     public boolean step() {
-        try {
-            return JNI.Sqlite3.Cursor.step(cursorId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return JNI.Sqlite3.Cursor.step(cursorId);
     }
 
     /**

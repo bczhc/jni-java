@@ -85,9 +85,9 @@ public class JNI {
              * Call this rather than {@link #step(long)} when the statement returns values like `select` statements.
              *
              * @param stmtId statement native address
-             * @return {@link Sqlite3#SQLITE_ROW} if succeeded, otherwise others.
+             * @return {@code true} indicates a new row is ready
              */
-            public static native int stepRow(long stmtId);
+            public static native boolean stepRow(long stmtId);
 
             /**
              * @param stmtId statement native address
