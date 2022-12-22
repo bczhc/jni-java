@@ -5,6 +5,7 @@ import pers.zhc.jni.JNI;
 
 public class Statement {
     private final long statementId;
+    private boolean released = false;
 
     public Statement(long statementId) {
         this.statementId = statementId;
@@ -17,6 +18,7 @@ public class Statement {
      * @param a   value
      */
     public void bind(int row, int a) {
+        checkIfReleased();
         JNI.Sqlite3.Statement.bind(statementId, row, a);
     }
 
@@ -27,6 +29,7 @@ public class Statement {
      * @param a   value
      */
     public void bind(int row, long a) {
+        checkIfReleased();
         JNI.Sqlite3.Statement.bind(statementId, row, a);
     }
 
@@ -37,6 +40,7 @@ public class Statement {
      * @param a   value
      */
     public void bind(int row, double a) {
+        checkIfReleased();
         JNI.Sqlite3.Statement.bind(statementId, row, a);
     }
 
@@ -47,6 +51,7 @@ public class Statement {
      * @param s   string
      */
     public void bindText(int row, String s) {
+        checkIfReleased();
         JNI.Sqlite3.Statement.bindText(statementId, row, s);
     }
 
@@ -56,6 +61,7 @@ public class Statement {
      * @param row row, start from 1.
      */
     public void bindNull(int row) {
+        checkIfReleased();
         JNI.Sqlite3.Statement.bindNull(statementId, row);
     }
 
@@ -63,6 +69,7 @@ public class Statement {
      * Reset the values bound in the statement.
      */
     public void reset() {
+        checkIfReleased();
         JNI.Sqlite3.Statement.reset(statementId);
     }
 
@@ -84,6 +91,7 @@ public class Statement {
      * @param size  bind size
      */
     public void bindBlob(int row, byte[] bytes, int size) {
+        checkIfReleased();
         JNI.Sqlite3.Statement.bindBlob(statementId, row, bytes, size);
     }
 
@@ -91,6 +99,7 @@ public class Statement {
      * Execute this statement.
      */
     public void step() {
+        checkIfReleased();
         JNI.Sqlite3.Statement.step(statementId);
     }
 
@@ -99,18 +108,23 @@ public class Statement {
      * You should guarantee it's released before closing the database.
      */
     public void release() {
+        checkIfReleased();
         JNI.Sqlite3.Statement.finalize(statementId);
+        released = true;
     }
 
     public boolean stepRow() {
+        checkIfReleased();
         return JNI.Sqlite3.Statement.stepRow(statementId);
     }
 
     public Cursor getCursor() {
-        return new Cursor(JNI.Sqlite3.Statement.getCursor(statementId));
+        checkIfReleased();
+        return new Cursor(JNI.Sqlite3.Statement.getCursor(statementId), this);
     }
 
     public int getIndexByColumnName(String name) {
+        checkIfReleased();
         return JNI.Sqlite3.Statement.getIndexByColumnName(statementId, name);
     }
 
@@ -144,5 +158,15 @@ public class Statement {
 
     public interface RowMapper<T> {
         T mapRow(Cursor cursor);
+    }
+
+    public boolean isReleased() {
+        return released;
+    }
+
+    void checkIfReleased() {
+        if (released) {
+            throw new SQLiteException("Use of a released statement");
+        }
     }
 }

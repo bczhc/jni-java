@@ -7,12 +7,18 @@ import pers.zhc.jni.JNI;
  */
 public class Cursor {
     private final long cursorId;
+    /**
+     * for the call of {@link Statement#checkIfReleased()}
+     */
+    private final Statement statement;
 
-    public Cursor(long cursorId) {
+    public Cursor(long cursorId, Statement statement) {
         this.cursorId = cursorId;
+        this.statement = statement;
     }
 
     public void reset() {
+        statement.checkIfReleased();
         JNI.Sqlite3.Cursor.reset(cursorId);
     }
 
@@ -23,6 +29,7 @@ public class Cursor {
      * @return next
      */
     public boolean step() {
+        statement.checkIfReleased();
         return JNI.Sqlite3.Cursor.step(cursorId);
     }
 
@@ -32,6 +39,7 @@ public class Cursor {
      * @return data
      */
     public byte[] getBlob(int column) {
+        statement.checkIfReleased();
         return JNI.Sqlite3.Cursor.getBlob(cursorId, column);
     }
 
@@ -41,6 +49,7 @@ public class Cursor {
      * @return text string
      */
     public String getText(int column) {
+        statement.checkIfReleased();
         return JNI.Sqlite3.Cursor.getText(cursorId, column);
     }
 
@@ -50,6 +59,7 @@ public class Cursor {
      * @return double value
      */
     public double getDouble(int column) {
+        statement.checkIfReleased();
         return JNI.Sqlite3.Cursor.getDouble(cursorId, column);
     }
 
@@ -59,6 +69,7 @@ public class Cursor {
      * @return float value
      */
     public float getFloat(int column) {
+        statement.checkIfReleased();
         return (float) JNI.Sqlite3.Cursor.getDouble(cursorId, column);
     }
 
@@ -68,6 +79,7 @@ public class Cursor {
      * @return long value.
      */
     public long getLong(int column) {
+        statement.checkIfReleased();
         return JNI.Sqlite3.Cursor.getLong(cursorId, column);
     }
 
@@ -77,6 +89,7 @@ public class Cursor {
      * @return integer value
      */
     public int getInt(int column) {
+        statement.checkIfReleased();
         return JNI.Sqlite3.Cursor.getInt(cursorId, column);
     }
 }
