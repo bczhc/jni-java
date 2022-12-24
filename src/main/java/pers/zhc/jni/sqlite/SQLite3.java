@@ -162,4 +162,23 @@ public class SQLite3 {
 
         return schemaList;
     }
+
+    public ArrayList<ColumnInfo> queryTableInfo(String table) {
+        ArrayList<ColumnInfo> columns = new ArrayList<>();
+        Statement statement = this.compileStatement("SELECT cid, name, type, \"notnull\", dflt_value, pk\n" +
+                "FROM pragma.pragma_table_info(?)");
+        statement.bindText(1, table);
+        Rows<ColumnInfo> rows = statement.queryRows(cursor -> new ColumnInfo(
+                cursor.getInt(0),
+                cursor.getText(1),
+                cursor.getText(2),
+                cursor.getInt(3),
+                cursor.getText(4),
+                cursor.getInt(5)
+        ));
+        ((Iterable<ColumnInfo>) () -> rows).forEach(columns::add);
+
+        statement.release();
+        return columns;
+    }
 }
