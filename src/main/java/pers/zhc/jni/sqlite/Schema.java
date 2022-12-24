@@ -37,4 +37,15 @@ public class Schema {
         this.rootPage = rootPage;
         this.sql = sql;
     }
+
+    @Override
+    public String toString() {
+        return "Schema{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                ", tableName='" + tableName + '\'' +
+                ", rootPage=" + rootPage +
+                ", sql='" + sql + '\'' +
+                '}';
+    }
 }

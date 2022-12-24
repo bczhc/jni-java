@@ -16,4 +16,16 @@ public class ColumnInfo {
         this.defaultValue = defaultValue;
         this.primaryKey = primaryKey;
     }
+
+    @Override
+    public String toString() {
+        return "ColumnInfo{" +
+                "columnId=" + columnId +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", notNull=" + notNull +
+                ", defaultValue='" + defaultValue + '\'' +
+                ", primaryKey=" + primaryKey +
+                '}';
+    }
 }
